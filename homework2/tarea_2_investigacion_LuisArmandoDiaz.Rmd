@@ -1,0 +1,139 @@
+Partes de una función en R
+Las partes de una función son:
+
+Entradas o argumentos: 
+sirven para ingresar información necesaria para realizar el procedimiento de la función. Los argumentos pueden estar vacíos y a la espera de que el usuario ingrese valores, o pueden tener valores por defecto, esto significa que si el usuario no ingresa un valor, la función usará el valor por defecto. Una función puede tener o no argumentos de entrada, en los ejemplos se mostrarán estos casos.
+
+Cuerpo: está formado por un conjunto de instrucciones que transforman las entradas en las salidas deseadas. Si el cuerpo de la función está formado por varias instrucciones éstas deben ir entre llaves { }.
+
+Salidas: son los resultados de la función. Toda función debe tener al menos un resultado. Si una función entrega varios tipos de objetos se acostumbra a organizarlos en una lista que puede manejar los diferentes tipos de objetos.
+
+```{r}
+nombre_de_funcion <- function(par1, par2, ...) {
+  cuerpo
+  cuerpo
+  cuerpo
+  cuerpo
+  return(resultado)
+}
+```
+
+Ejemplo:
+```{r}
+suma <- function(x, y) {
+  resultado <- x + y
+  return(resultado)
+}
+
+suma(x=4, y=6)
+
+```
+
+
+Argumentos
+Los argumentos de una función son una serie de valores (opcionales) que se pasan a la función, de modo que ciertas variables dentro de estas posean diferentes valores en cada llamada a la función.
+
+```{r}
+area_rectangulo <- function(lado1, lado2) 
+{
+  area <- lado1 * lado2
+  print(paste("el área es ", area))
+}
+
+area_rectangulo(2, 3)
+"el área es  6"
+
+formals(area_rectangulo)
+
+```
+
+lapply
+
+lapply() es un caso especial de apply(), diseñado para aplicar funciones a todos los elementos de una lista. La l de su nombre se refiere, precisamente, a lista.
+
+lapply() intentará coercionar a una lista el objeto que demos como argumento y después aplicará una función a todos sus elementos.
+
+lapply siempre nos devolverá una lista como resultado. A diferencia de apply, sabemos que siempre obtendremos ub objeto de tipo lista después de aplicar una función, sin importar cuál función sea.
+
+Dado que en R todas las estructuras de datos pueden coercionarse a una lista, lapply() puede usarse en un número más amplio de casos que apply(), además de que esto nos permite utilizar funciones que aceptan argumentos distintos a vectores.
+
+La estructura de esta función es:
+
+```{r}
+lapply(X, FUN)
+```
+
+Probemos lapply() aplicando una función a un data frame. Usaremos el conjunto de datos trees, incluido por defecto en R base.
+
+trees contiene datos sobre el grueso, alto y volumen de distinto árboles de cerezo negro. Cada una de estas variables está almacenada en una columna del data frame.
+
+Veamos los primeros cinco renglones de trees.
+```{r}
+
+trees[1:5, ]
+
+```
+Aplicamos la función mean(), usando su nombre.
+
+```{r}
+
+lapply(X = trees, FUN = mean)
+```
+Dado que un data frame está formado por columnas y cada columna es un vector atómico, cuando usamos lapply() , la función es aplicada a cada columna. lapply(), a diferencia de apply() no puede aplicarse a renglones.
+
+En este ejemplo, obtuvimos la media de grueso (Girth), alto (Height) y volumen (Volume), como una lista.
+
+Verificamos que la clase de nuestro resultado es una lista con class().
+
+```{r}
+
+arboles <- lapply(X = trees, FUN = mean)
+
+class(arboles)
+```
+
+La función sapply() en R está hecha para realizarle operaciones a una lista, pero igual admite otro tipo de objeto La diferencia con la función apply() es que la función devuelve un vector.
+
+```{r}
+
+sapply(x, FUN)
+```
+
+```{r}
+df = data.frame("NOMBRES" = c("Ana","Javiera","José","Juan","Miguel", "María"),
+                "LUGAR_ASISTIR" = c("Lugar1", "Lugar2", "Lugar1", "Lugar2", "Lugar1", "Lugar1"),
+                "DIAS_ASISTIDOS" = c(8,7,10,5,6,10),
+                "DIAS_TOTALES" = c(10,10,10,10,10,10))
+df
+```
+```{r}
+sapply(df[,c(3,4)], mean)
+```
+Podemos ver que el resultado de la función es un vector.
+
+Función tapply()
+La función tapply() en R, le aplica una función a los datos agrupados.
+
+```{r}
+
+tapply(x,  INDEX,  FUN)
+```
+
+Entonces ejecutamos la consulta:
+
+```{r}
+
+tapply(df$DIAS_ASISTIDOS,df$LUGAR_ASISTIR, mean)
+```
+Vapply
+Devuelve un vector con la longitud que tiene cada una de las listas introducidas como parámetro.
+
+```{r}
+
+x <- list(A = 1, B = 1:3, C = 1:7)
+
+
+vapply(x, FUN = length, FUN.VALUE = 0L)
+
+```
+
