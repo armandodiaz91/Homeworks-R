@@ -80,7 +80,7 @@ dataset_results %>%
 ```{r}
 dataset_results %>%
   filter(party=='Republican',candidate=='Ted Cruz',state=='Alaska') %>%
-  mutate(vote_count-votes/fraction_votes) %>%
+  mutate(vote_count=votes/fraction_votes) %>%
   arrange(desc(vote_count))
 ```
 
